@@ -7,6 +7,18 @@ public class PointsDistribution {
   private int constitution = 0;
   private int initiative = 0;
 
+  public int calculateDiff(PointsDistribution distribution) {
+    int diff = 0;
+
+    diff += this.degirity - distribution.degirity;
+    diff += this.force - distribution.force;
+    diff += this.resistance - distribution.resistance;
+    diff += this.constitution - distribution.constitution;
+    diff += this.initiative - distribution.initiative;
+
+    return diff;
+  }
+
   /**
    * Degirity getter
    */
@@ -77,7 +89,4 @@ public class PointsDistribution {
     this.initiative = initiative;
   }
 
-  public int calculateDiff(PointsDistribution distribution) {
-    return 0;
-  }
 }

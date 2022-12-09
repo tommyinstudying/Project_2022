@@ -17,27 +17,20 @@ public class Match {
     };
 
     this.zones.addAll(Arrays.asList(zoneArray));
+
+    // this.players.add(player)
   }
 
   public void distributePoints() {
 
   }
-
-  public void addPlayer(Player player) throws Exception {
-    if (players.size() == 2) {
-      throw new Exception("Only 2 players are allowed");
-    }
-
-    this.players.add(player);
-  }
 }
 
 /*
- * 
+ * TO DO:
  * 1. Initialize match
  * 2. Create students and distribute points
  * 3. Choose reservists
  * 4. Allocate them in zones
- * 
  * 
  */

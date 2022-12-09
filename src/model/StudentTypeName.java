@@ -1,17 +1,13 @@
 package model;
 
-public enum Branch {
-  ISI("ISI"),
-  RT("RT"),
-  A2I("A2I"),
-  GI("GI"),
-  GM("GM"),
-  MTE("MTE"),
-  MM("MM");
+public enum StudentTypeName {
+  REGULAR("Regular"),
+  ELITE("Elite"),
+  MASTER_GOBI("Master Gobi");
 
   private final String stringValue;
 
-  Branch(final String stringValue) {
+  StudentTypeName(final String stringValue) {
     this.stringValue = stringValue;
   }
 

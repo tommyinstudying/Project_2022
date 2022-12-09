@@ -1,17 +1,19 @@
 package model;
 
-public enum StudentType {
-  REGULAR("Regular"),
-  ELITE("Elite"),
-  MASTER_GOBI("Master Gobi");
+public class StudentType {
+  private StudentTypeName typeName;
+  private PointsDistribution additionalDistribution;
 
-  private final String type;
-
-  StudentType(final String type) {
-    this.type = type;
+  public StudentType(StudentTypeName typeName, PointsDistribution additionalDistribution) {
+    this.typeName = typeName;
+    this.additionalDistribution = additionalDistribution;
   }
 
-  public String toString() {
-    return type;
+  public StudentTypeName getTypeName() {
+    return this.typeName;
+  }
+
+  public PointsDistribution getAdditionalDistribution() {
+    return this.additionalDistribution;
   }
 }
