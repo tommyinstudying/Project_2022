@@ -6,7 +6,7 @@ public class PointsDistribution {
   private int resistance = 0;
   private int constitution = 0;
   private int initiative = 0;
-
+   //example change
   public int calculateDiff(PointsDistribution distribution) {
     int diff = 0;
 
