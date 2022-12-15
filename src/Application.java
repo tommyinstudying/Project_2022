@@ -4,6 +4,7 @@ import model.Match;
 import model.Player;
 import model.Student;
 import model.PointsDistribution;
+import model.Zone;
 
 public class Application {
   public void run() {
@@ -66,10 +67,20 @@ public class Application {
 
       System.out.println("Reservists chosen");
 
+      /*
+       * Distribute students
+       */
+
+      distributeStudents(match, player1);
+      distributeStudents(match, player2);
+
+      for (Zone zone : match.getZones()) {
+        System.out.println(zone);
+      }
+
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
-
   }
 
   final private int[][] distMatrix1 = {
@@ -159,5 +170,36 @@ public class Application {
 
     Student r5 = students.get(8);
     player.changeIsReservist(r5, true);
+  }
+
+  private void distributeStudents(Match match, Player player) {
+    ArrayList<Student> students = player.getStudents();
+    ArrayList<Zone> zones = match.getZones();
+
+    Zone zone1 = zones.get(0);
+    Zone zone2 = zones.get(1);
+    Zone zone3 = zones.get(2);
+    Zone zone4 = zones.get(3);
+    Zone zone5 = zones.get(4);
+
+    zone1.addStudent(students.get(1));
+    zone1.addStudent(students.get(3));
+    zone1.addStudent(students.get(5));
+
+    zone2.addStudent(students.get(7));
+    zone2.addStudent(students.get(9));
+    zone2.addStudent(students.get(10));
+
+    zone3.addStudent(students.get(11));
+    zone3.addStudent(students.get(12));
+    zone3.addStudent(students.get(13));
+
+    zone4.addStudent(students.get(14));
+    zone4.addStudent(students.get(15));
+    zone4.addStudent(students.get(16));
+
+    zone5.addStudent(students.get(17));
+    zone5.addStudent(students.get(18));
+    zone5.addStudent(students.get(19));
   }
 }

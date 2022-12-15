@@ -64,7 +64,7 @@ public class Player {
       eliteDistribution.setConstitution(1);
       eliteDistribution.setInitiative(1);
       StudentType eliteType = new StudentType(StudentTypeName.ELITE, eliteDistribution);
-      this.students.add(new Student(this, name + " " + eliteType.getTypeName() + " " + i + 15, eliteType));
+      this.students.add(new Student(this, name + " " + eliteType.getTypeName() + " " + (i + 15), eliteType));
     }
 
     /*
@@ -79,7 +79,6 @@ public class Player {
     gobiDistribution.setInitiative(2);
     StudentType eliteType = new StudentType(StudentTypeName.MASTER_GOBI, gobiDistribution);
     this.students.add(new Student(this, name + " Master Gobi", eliteType));
-
   }
 
   /**

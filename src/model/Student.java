@@ -60,6 +60,15 @@ public class Student {
   }
 
   /**
+   * Player getter.
+   * 
+   * @return Player that owns the student
+   */
+  public Player getPlayer() {
+    return this.player;
+  }
+
+  /**
    * isReservist flag getter.
    * 
    * @return Boolean value of isReservist flag

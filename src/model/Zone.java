@@ -71,4 +71,45 @@ public class Zone {
     // TODO
     return students.stream().reduce(0, (acc, student) -> acc + student.getEcts(), Integer::sum);
   }
+
+  /**
+   * Name getter.
+   * 
+   * @return Name of the zone
+   */
+  public String getName() {
+    return this.name;
+  }
+
+  /**
+   * Students getter.
+   * 
+   * @return List of students within the zone
+   */
+  public ArrayList<Student> getStudents() {
+    return this.students;
+  }
+
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("Zone - ");
+    sb.append(this.name);
+    sb.append("\n");
+
+    for (Student student : this.students) {
+      Player player = student.getPlayer();
+      sb.append("P - ");
+      sb.append(player.getName());
+      sb.append(", S - ");
+      sb.append(student.getName());
+      sb.append(", ");
+      sb.append(student.getEcts());
+      sb.append(" ECTS");
+      sb.append("\n");
+    }
+
+    return sb.toString();
+  }
 }

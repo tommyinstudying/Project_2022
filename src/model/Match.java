@@ -44,10 +44,6 @@ public class Match {
     this.players.add(p2);
   }
 
-  public void distributePoints() {
-
-  }
-
   /**
    * Extracts all the zones that exist in the game.
    * It can be useful when it is needed to access zones from client code.
