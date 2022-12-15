@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class that contains high level game logic.
@@ -38,7 +40,16 @@ public class Match {
     this.zones.addAll(Arrays.asList(zoneArray));
 
     Player p1 = new Player("Player 1");
+
+    p1.initializeStudents();
+
     Player p2 = new Player("Player 2");
+
+    List<String> namesToExclude = p1.getStudents()
+        .stream().map(student -> student.getName())
+        .collect(Collectors.toList());
+
+    p2.initializeStudents(namesToExclude);
 
     this.players.add(p1);
     this.players.add(p2);
