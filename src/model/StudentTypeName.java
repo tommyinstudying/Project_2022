@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Enum that contains names of student types.
+ */
 public enum StudentTypeName {
   REGULAR("Regular"),
   ELITE("Elite"),

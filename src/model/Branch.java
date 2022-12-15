@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Enum that contains names of branches.
+ */
 public enum Branch {
   ISI("ISI"),
   RT("RT"),
