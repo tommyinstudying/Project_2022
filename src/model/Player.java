@@ -39,8 +39,20 @@ public class Player {
    * @param name Name of the player.
    */
   public Player(String name) {
-
     this.name = name;
+  }
+
+  /**
+   * Initializes the player's students with default values.
+   * 
+   * @param namesToExclude Names excluded from the the list of available names.
+   *                       This is useful to avoid the repetition of names with
+   *                       the students of another player.
+   */
+  public void initializeStudents(List<String> namesToExclude) {
+    NameGenerator nameGenerator = new NameGenerator();
+
+    nameGenerator.excludeNames(namesToExclude);
 
     /*
      * We create first 15 students
@@ -49,7 +61,7 @@ public class Player {
     for (int i = 0; i < 15; i++) {
       PointsDistribution regularDistribution = new PointsDistribution();
       StudentType regularType = new StudentType(StudentTypeName.REGULAR, regularDistribution);
-      this.students.add(new Student(this, name + " " + regularType.getTypeName() + " " + i, regularType));
+      this.students.add(new Student(this, nameGenerator.generateName(), regularType));
     }
 
     /*
@@ -64,7 +76,7 @@ public class Player {
       eliteDistribution.setConstitution(1);
       eliteDistribution.setInitiative(1);
       StudentType eliteType = new StudentType(StudentTypeName.ELITE, eliteDistribution);
-      this.students.add(new Student(this, name + " " + eliteType.getTypeName() + " " + (i + 15), eliteType));
+      this.students.add(new Student(this, nameGenerator.generateName(), eliteType));
     }
 
     /*
@@ -78,7 +90,17 @@ public class Player {
     gobiDistribution.setConstitution(2);
     gobiDistribution.setInitiative(2);
     StudentType eliteType = new StudentType(StudentTypeName.MASTER_GOBI, gobiDistribution);
-    this.students.add(new Student(this, name + " Master Gobi", eliteType));
+    this.students.add(new Student(this, "Master " + nameGenerator.generateName(), eliteType));
+  }
+
+  /**
+   * Initializes the player's students with default values.
+   * Overloads method
+   * <code>public void initializeStudents(String[] namesToExclude)</code>
+   * and delegates the work to it.
+   */
+  public void initializeStudents() {
+    this.initializeStudents(new ArrayList<String>());
   }
 
   /**
