@@ -75,12 +75,3 @@ public class Match {
     return this.players;
   }
 }
-
-/*
- * TO DO:
- * 1. Initialize match
- * 2. Create students and distribute points
- * 3. Choose reservists
- * 4. Allocate them in zones
- * 
- */

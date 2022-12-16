@@ -60,6 +60,16 @@ public class Student {
   }
 
   /**
+   * Checks if the student is out of the game.
+   * 
+   * @return Boolean value representing the student
+   *         is out of the game or not
+   */
+  public boolean isOutOfGame() {
+    return this.ects <= 0;
+  }
+
+  /**
    * Player getter.
    * 
    * @return Player that owns the student
@@ -147,5 +157,23 @@ public class Student {
    */
   public void setDistribution(PointsDistribution distribution) {
     this.distribution = distribution;
+  }
+
+  /**
+   * Strategy getter.
+   * 
+   * @return Strategy of the student
+   */
+  public Strategy getStrategy() {
+    return this.strategy;
+  }
+
+  /**
+   * Strategy setter.
+   * 
+   * @param strategy Strategy of the student to set
+   */
+  public void setStrategy(Strategy strategy) {
+    this.strategy = strategy;
   }
 }

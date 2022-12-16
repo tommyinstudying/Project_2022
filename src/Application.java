@@ -6,6 +6,10 @@ import model.Student;
 import model.PointsDistribution;
 import model.Zone;
 
+// TODO: remove it
+import model.OffensiveStrategy;
+import model.DefensiveStrategy;
+
 public class Application {
   public void run() {
     /*
@@ -77,6 +81,30 @@ public class Application {
       for (Zone zone : match.getZones()) {
         System.out.println(zone);
       }
+
+      /*
+       * Testing offensive strategy
+       */
+
+      OffensiveStrategy os = new OffensiveStrategy();
+
+      System.out.println("Offensive strategy test");
+      os.test(player1.getStudents().get(3), player2.getStudents().get(0));
+      os.testFind(
+          match.getZones().get(0).getStudents().get(0),
+          match.getZones().get(0).getStudents());
+
+      /*
+       * Testing defensive strategy
+       */
+
+      DefensiveStrategy ds = new DefensiveStrategy();
+
+      System.out.println("Defensive strategy test");
+      ds.test(player1.getStudents().get(3), player2.getStudents().get(0));
+      ds.testFind(
+          match.getZones().get(0).getStudents().get(0),
+          match.getZones().get(0).getStudents());
 
     } catch (Exception e) {
       System.out.println(e.getMessage());
