@@ -60,6 +60,10 @@ public class Zone {
     destination.addStudent(student);
   }
 
+  public void fight() {
+
+  }
+
   /**
    * Get sum of students' ECTS (health points)
    * within the zone for a particular player.
