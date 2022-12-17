@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
+import helpers.Color;
 import model.Match;
 import model.Player;
 import model.Student;
 import model.PointsDistribution;
 import model.Zone;
-
-// TODO: remove it
+import model.RandomStrategy;
 import model.OffensiveStrategy;
 import model.DefensiveStrategy;
 
@@ -29,51 +29,73 @@ public class Application {
        * Create match
        */
 
-      System.out.println("\n--- Create match ---\n");
+      System.out.println(Color.YELLOW_BOLD + "\n--- Create match ---\n" + Color.RESET);
+
       Match match = new Match();
+      ArrayList<Player> players = match.getPlayers();
+      players.get(0).setName("Player Dino");
+      players.get(1).setName("Player Franco");
+
       System.out.println("Match created");
 
       /*
        * Distribute points
        */
 
-      System.out.println("\n--- Distribute points ---\n");
+      System.out.println(Color.YELLOW_BOLD + "\n--- Distribute points ---\n" + Color.RESET);
 
-      ArrayList<Player> players = match.getPlayers();
-
+      System.out.println(Color.CYAN_BRIGHT + players.get(0).getName() + ":" + Color.RESET);
       Player player1 = players.get(0);
       this.distributePoints(player1, distMatrix1);
-      System.out.println("Points left (P1): " + player1.getPointsLeft());
+      System.out.println("Points left: " + player1.getPointsLeft());
       this.showDistribution(player1);
       System.out.println();
 
+      System.out.println(Color.CYAN_BRIGHT + players.get(1).getName() + ":" + Color.RESET);
       Player player2 = players.get(1);
       this.distributePoints(player2, distMatrix2);
-      System.out.println("Points left (P2): " + player2.getPointsLeft());
-      this.showDistribution(player1);
-      System.out.println();
-
-      System.out.println("Points distributed");
+      System.out.println("Points left: " + player2.getPointsLeft());
+      this.showDistribution(player2);
 
       /*
        * Choose reservists
        */
 
-      System.out.println("\n--- Choose reservists ---\n");
+      System.out.println(Color.YELLOW_BOLD + "\n--- Choose reservists ---\n" + Color.RESET);
 
+      System.out.println(Color.CYAN_BRIGHT + players.get(0).getName() + ":" + Color.RESET);
       chooseReservists(player1);
-      System.out.println("Reservists amount (P1): " + player1.getReservists().size());
-      System.out.println();
+      ArrayList<Student> reservists1 = player1.getReservists();
+      System.out.println("Reservists amount: " + reservists1.size());
+      for (int i = 0; i < reservists1.size(); i++) {
+        Student st = reservists1.get(i);
+        System.out.print(st.getName());
 
+        if (i + 1 != reservists1.size()) {
+          System.out.print(", ");
+        }
+      }
+      System.out.println("\n");
+
+      System.out.println(Color.CYAN_BRIGHT + players.get(1).getName() + ":" + Color.RESET);
       chooseReservists(player2);
-      System.out.println("Reservists amount (P2): " + player2.getReservists().size());
-      System.out.println();
+      ArrayList<Student> reservists2 = player2.getReservists();
+      System.out.println("Reservists amount: " + reservists2.size());
+      for (int i = 0; i < reservists2.size(); i++) {
+        Student st = reservists2.get(i);
+        System.out.print(st.getName());
 
-      System.out.println("Reservists chosen");
+        if (i + 1 != reservists2.size()) {
+          System.out.print(", ");
+        }
+      }
+      System.out.println();
 
       /*
-       * Distribute students
+       * Distribute students into zones
        */
+
+      System.out.println(Color.YELLOW_BOLD + "\n--- Distribute students into zones ---\n" + Color.RESET);
 
       distributeStudents(match, player1);
       distributeStudents(match, player2);
@@ -83,31 +105,105 @@ public class Application {
       }
 
       /*
-       * Testing offensive strategy
+       * Play
        */
 
-      OffensiveStrategy os = new OffensiveStrategy();
+      System.out.println(Color.YELLOW_BOLD + "\n--- Play ---\n" + Color.RESET);
 
-      System.out.println("Offensive strategy test");
-      os.test(player1.getStudents().get(3), player2.getStudents().get(0));
-      os.testFind(
-          match.getZones().get(0).getStudents().get(0),
-          match.getZones().get(0).getStudents());
+      while (match.getWinner() == null) {
+        /*
+         * Distribute reservists after 2 round
+         * in first found zone without winner.
+         */
+        if (match.getPreviousRound() == 2) {
+          System.out.println(Color.YELLOW + "\n--- Distribute reservists ---\n" + Color.RESET);
+
+          for (Zone zone : match.getZones()) {
+            if (zone.getWinner() == null) {
+              for (Player player : players) {
+                for (Student reservist : player.getReservists()) {
+                  reservist.setStrategy(new RandomStrategy());
+                  zone.addStudent(reservist);
+                }
+              }
+
+              break;
+            }
+          }
+
+          for (Zone zone : match.getZones()) {
+            System.out.println(zone);
+          }
+        }
+
+        /*
+         * Relocate students from controlled zones
+         * to uncontrolled zones
+         */
+        if (match.getPreviousRound() != 0) {
+          System.out.println(Color.YELLOW + "\n--- Relocate students from controlled zones ---\n" + Color.RESET);
+
+          for (Zone zone : match.getZones()) {
+            if (zone.getWinner() == null) {
+              continue;
+            }
+
+            ArrayList<Student> zoneStudents = zone.getStudents();
+            ArrayList<Student> studentsToRelocate = new ArrayList<Student>();
+
+            for (int i = 0; i < zoneStudents.size(); i++) {
+              if (zoneStudents.get(i).isOutOfGame()) {
+                continue;
+              }
+
+              for (int j = i + 1; j < zoneStudents.size(); j++) {
+                Student studentToRelocate = zoneStudents.get(j);
+
+                if (studentToRelocate.isOutOfGame()) {
+                  continue;
+                }
+
+                studentsToRelocate.add(studentToRelocate);
+
+              }
+              break;
+            }
+
+            for (Zone destination : match.getZones()) {
+              if (destination != zone && destination.getWinner() == null) {
+                for (Student studentToRelocate : studentsToRelocate) {
+                  zone.relocateStudent(studentToRelocate, destination);
+                }
+              }
+            }
+          }
+
+          for (Zone zone : match.getZones()) {
+            System.out.println(zone);
+          }
+        }
+
+        System.out.println(Color.YELLOW + "\n--- Round " + (match.getPreviousRound() + 1) + " ---\n" + Color.RESET);
+
+        match.fight();
+
+        for (Zone zone : match.getZones()) {
+          System.out.println(zone);
+        }
+      }
 
       /*
-       * Testing defensive strategy
+       * The end
        */
 
-      DefensiveStrategy ds = new DefensiveStrategy();
+      System.out.println(Color.YELLOW_BOLD + "\n--- THE END ---\n" + Color.RESET);
 
-      System.out.println("Defensive strategy test");
-      ds.test(player1.getStudents().get(3), player2.getStudents().get(0));
-      ds.testFind(
-          match.getZones().get(0).getStudents().get(0),
-          match.getZones().get(0).getStudents());
-
+      System.out.print("The winner is ");
+      System.out.println(Color.CYAN_BRIGHT + match.getWinner().getName() + Color.RESET);
+      System.out.println();
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.out.println("Something went wrong...");
+      System.out.println(e);
     }
   }
 
@@ -210,24 +306,39 @@ public class Application {
     Zone zone4 = zones.get(3);
     Zone zone5 = zones.get(4);
 
+    students.get(1).setStrategy(new OffensiveStrategy());
     zone1.addStudent(students.get(1));
+    students.get(3).setStrategy(new DefensiveStrategy());
     zone1.addStudent(students.get(3));
+    students.get(5).setStrategy(new RandomStrategy());
     zone1.addStudent(students.get(5));
 
+    students.get(7).setStrategy(new OffensiveStrategy());
     zone2.addStudent(students.get(7));
+    students.get(9).setStrategy(new DefensiveStrategy());
     zone2.addStudent(students.get(9));
+    students.get(10).setStrategy(new RandomStrategy());
     zone2.addStudent(students.get(10));
 
+    students.get(11).setStrategy(new OffensiveStrategy());
     zone3.addStudent(students.get(11));
+    students.get(12).setStrategy(new DefensiveStrategy());
     zone3.addStudent(students.get(12));
+    students.get(13).setStrategy(new RandomStrategy());
     zone3.addStudent(students.get(13));
 
+    students.get(14).setStrategy(new OffensiveStrategy());
     zone4.addStudent(students.get(14));
+    students.get(15).setStrategy(new DefensiveStrategy());
     zone4.addStudent(students.get(15));
+    students.get(16).setStrategy(new RandomStrategy());
     zone4.addStudent(students.get(16));
 
+    students.get(17).setStrategy(new OffensiveStrategy());
     zone5.addStudent(students.get(17));
+    students.get(18).setStrategy(new DefensiveStrategy());
     zone5.addStudent(students.get(18));
+    students.get(19).setStrategy(new RandomStrategy());
     zone5.addStudent(students.get(19));
   }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 /**
  * Class that contains the logic related to the student.
  */
@@ -57,6 +59,18 @@ public class Student {
     this.player = player;
     this.name = name;
     this.type = type;
+  }
+
+  /**
+   * Executes logic for making a turn by the student.
+   * It delegates all the work to the instance of class
+   * that implements interface Strategy.
+   * 
+   * @param studentList List of all the students that
+   *                    potentially can be a target
+   */
+  public void makeTurn(List<Student> studentList) {
+    this.strategy.makeTurn(this, studentList);
   }
 
   /**

@@ -36,4 +36,9 @@ public class RandomStrategy implements Strategy {
 
     this.defensiveStrategy.makeTurn(actor, studentList);
   }
+
+  @Override
+  public String toString() {
+    return "R";
+  }
 }

@@ -26,6 +26,35 @@ public class Match {
   private ArrayList<Player> players = new ArrayList<Player>();
 
   /**
+   * Number of the previous round.
+   * Initially it is 0.
+   */
+  private int previousRound = 0;
+
+  /**
+   * The winning player in the match.
+   * It can be updated in the end of a round.
+   */
+  private Player winner = null;
+
+  /**
+   * Finds the winner of the match.
+   * It returns null if there is
+   * no winner.
+   * 
+   * @return The winning player in the match
+   */
+  private Player findWinner() {
+    for (Player player : this.players) {
+      if (player.getControlledZones().size() >= 3) {
+        return player;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Constructor of class Match.
    */
   public Match() {
@@ -56,6 +85,36 @@ public class Match {
   }
 
   /**
+   * Makes a fight in all the uncontrolled zones.
+   * Fight is being performed until any of involved zones is controlled.
+   */
+  public void fight() {
+    if (this.winner != null) {
+      return;
+    }
+
+    boolean isFinished = false;
+
+    while (!isFinished) {
+      for (Zone zone : this.zones) {
+
+        isFinished = zone.fight();
+
+        if (isFinished) {
+          break;
+        }
+      }
+    }
+
+    Player winner = this.findWinner();
+    this.winner = winner;
+
+    if (winner == null) {
+      this.previousRound++;
+    }
+  }
+
+  /**
    * Extracts all the zones that exist in the game.
    * It can be useful when it is needed to access zones from client code.
    * 
@@ -73,5 +132,23 @@ public class Match {
    */
   public ArrayList<Player> getPlayers() {
     return this.players;
+  }
+
+  /**
+   * Previous round getter.
+   * 
+   * @return Number of the previous round
+   */
+  public int getPreviousRound() {
+    return this.previousRound;
+  }
+
+  /**
+   * Winner getter.
+   * 
+   * @return Player that is the winner of the match
+   */
+  public Player getWinner() {
+    return this.winner;
   }
 }
