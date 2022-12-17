@@ -2,6 +2,10 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import helpers.Color;
 
 /**
  * Class that incorporates all
@@ -21,6 +25,57 @@ public class Zone {
   private ArrayList<Student> students = new ArrayList<Student>();
 
   /**
+   * The winning player in the zone.
+   * It can be updated after a fight in the zone.
+   */
+  private Player winner = null;
+
+  /**
+   * Sorts students in zone
+   * by initiative in ascending order.
+   * This is to ensure that the list is ready
+   * to be used for the fight.
+   */
+  private void sortStudents() {
+    Collections.sort(this.students, new Comparator<Student>() {
+      public int compare(Student s1, Student s2) {
+        Integer initiative1 = s1.getDistribution().getInitiative();
+        Integer initiative2 = s2.getDistribution().getInitiative();
+        return initiative1.compareTo(initiative2) * -1;
+      }
+    });
+  }
+
+  /**
+   * Finds the winning player in the zone.
+   * The player wins in case all the remaining
+   * students belong to them. Returns null
+   * if there is no winner.
+   * 
+   * @return The winning player in the zone
+   */
+  private Player findWinner() {
+    Player winner = null;
+
+    for (Student student : this.students) {
+      if (!student.isOutOfGame()) {
+        Player player = student.getPlayer();
+
+        if (winner == null) {
+          winner = student.getPlayer();
+          continue;
+        }
+
+        if (winner != player) {
+          return null;
+        }
+      }
+    }
+
+    return winner;
+  }
+
+  /**
    * Constuctor of class Zone.
    * 
    * @param name Name of the zone
@@ -36,6 +91,7 @@ public class Zone {
    */
   public void addStudent(Student student) {
     students.add(student);
+    sortStudents();
   }
 
   /**
@@ -60,8 +116,38 @@ public class Zone {
     destination.addStudent(student);
   }
 
-  public void fight() {
+  /**
+   * Makes a fight in the zone.
+   * It returns <code>true</code> if
+   * the fight is finished after the method
+   * is called, otherwise it returns <code>false</code>.
+   * 
+   * @return Boolean value representing that the fight
+   *         is finished after the method is called
+   */
+  public boolean fight() {
+    if (this.winner != null) {
+      return false;
+    }
 
+    for (Student student : this.students) {
+      if (student.isOutOfGame()) {
+        continue;
+      }
+
+      student.makeTurn(students);
+    }
+
+    Player winner = this.findWinner();
+    this.winner = winner;
+
+    if (winner != null) {
+      ArrayList<Zone> winnerControlledZones = winner.getControlledZones();
+      winnerControlledZones.add(this);
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -72,8 +158,19 @@ public class Zone {
    * @return Students' ECTS
    */
   public int getEcts(Player player) {
-    // TODO
-    return students.stream().reduce(0, (acc, student) -> acc + student.getEcts(), Integer::sum);
+    return students.stream().reduce(
+        0,
+        (acc, student) -> acc + (student.getPlayer() == player ? Math.max(student.getEcts(), 0) : 0),
+        Integer::sum);
+  }
+
+  /**
+   * Winner getter.
+   * 
+   * @return Player that is the winner in the zone
+   */
+  public Player getWinner() {
+    return this.winner;
   }
 
   /**
@@ -98,19 +195,45 @@ public class Zone {
   public String toString() {
     StringBuffer sb = new StringBuffer();
 
-    sb.append("Zone - ");
+    sb.append("Zone: ");
     sb.append(this.name);
+    if (this.winner != null) {
+      sb.append(" ");
+      sb.append(Color.CYAN_UNDERLINED);
+      sb.append("controlled by ");
+      sb.append(this.winner.getName());
+      sb.append(Color.RESET);
+    }
     sb.append("\n");
 
     for (Student student : this.students) {
       Player player = student.getPlayer();
-      sb.append("P - ");
+      sb.append(Color.CYAN_BRIGHT);
       sb.append(player.getName());
-      sb.append(", S - ");
+      sb.append(Color.RESET);
+      sb.append(" ");
+
+      sb.append(Color.MAGENTA_BRIGHT);
+      sb.append(student.getStrategy());
+      sb.append(Color.RESET);
+      sb.append(" ");
+
       sb.append(student.getName());
-      sb.append(", ");
-      sb.append(student.getEcts());
-      sb.append(" ECTS");
+      sb.append(" ");
+
+      if (student.getEcts() > 0) {
+        sb.append(Color.GREEN_BRIGHT);
+        sb.append(student.getEcts());
+        sb.append(" ECTS");
+        sb.append(Color.RESET);
+      }
+
+      if (student.getEcts() <= 0) {
+        sb.append(Color.RED_BRIGHT);
+        sb.append("out of game");
+        sb.append(Color.RESET);
+      }
+
       sb.append("\n");
     }
 

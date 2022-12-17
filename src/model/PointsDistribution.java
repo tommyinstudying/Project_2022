@@ -1,5 +1,7 @@
 package model;
 
+import helpers.Color;
+
 /**
  * Class that containts the logic related to points distribution.
  * It is used as a structure to store points distribution,
@@ -164,25 +166,34 @@ public class PointsDistribution {
   public String toString() {
     StringBuffer sb = new StringBuffer();
 
-    sb.append("d:");
+    sb.append("D ");
+    sb.append(Color.MAGENTA_BRIGHT);
     sb.append(this.degirity);
-    sb.append(" ");
+    sb.append(Color.RESET);
+    sb.append("\t");
 
-    sb.append("f:");
+    sb.append("F ");
+    sb.append(Color.MAGENTA_BRIGHT);
     sb.append(this.force);
-    sb.append(" ");
+    sb.append(Color.RESET);
+    sb.append("\t");
 
-    sb.append("r:");
+    sb.append("R ");
+    sb.append(Color.MAGENTA_BRIGHT);
     sb.append(this.resistance);
-    sb.append(" ");
+    sb.append(Color.RESET);
+    sb.append("\t");
 
-    sb.append("c:");
+    sb.append("C ");
+    sb.append(Color.MAGENTA_BRIGHT);
     sb.append(this.constitution);
-    sb.append(" ");
+    sb.append(Color.RESET);
+    sb.append("\t");
 
-    sb.append("i:");
+    sb.append("I ");
+    sb.append(Color.MAGENTA_BRIGHT);
     sb.append(this.initiative);
-    sb.append(" ");
+    sb.append(Color.RESET);
 
     return sb.toString();
   }

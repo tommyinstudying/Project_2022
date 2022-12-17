@@ -31,8 +31,6 @@ public class DefensiveStrategy implements Strategy {
             && student.getPlayer() == playerOfActor)
         .collect(Collectors.toList());
 
-    System.out.println(allies.size());
-
     if (allies.size() == 0) {
       return null;
     }
@@ -108,17 +106,8 @@ public class DefensiveStrategy implements Strategy {
     }
   }
 
-  public void test(Student actor, Student target) {
-    System.out.println("===");
-    System.out.println("Actor: " + actor.getDistribution());
-    System.out.println("Target: " + target.getDistribution());
-    System.out.println("Heal: " + this.calculateHeal(target));
-  }
-
-  public void testFind(Student actor, List<Student> studentList) {
-    // System.out.println("(D) Targets: " + );
-    Student s = findTarget(actor, studentList);
-
-    System.out.println(s);
+  @Override
+  public String toString() {
+    return "D";
   }
 }

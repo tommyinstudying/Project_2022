@@ -29,8 +29,6 @@ public class OffensiveStrategy implements Strategy {
         .filter(student -> !student.isOutOfGame() && (student.getPlayer() != playerOfActor))
         .collect(Collectors.toList());
 
-    System.out.println(enemies.size());
-
     if (enemies.size() == 0) {
       return null;
     }
@@ -106,17 +104,8 @@ public class OffensiveStrategy implements Strategy {
     }
   }
 
-  public void test(Student actor, Student target) {
-    System.out.println("===");
-    System.out.println("Actor: " + actor.getDistribution());
-    System.out.println("Target: " + target.getDistribution());
-    System.out.println("Damage: " + this.calculateDamage(actor, target));
-  }
-
-  public void testFind(Student actor, List<Student> studentList) {
-    // System.out.println("(D) Targets: " + );
-    Student s = findTarget(actor, studentList);
-
-    System.out.println(s);
+  @Override
+  public String toString() {
+    return "O";
   }
 }

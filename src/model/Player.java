@@ -237,25 +237,52 @@ public class Player {
   /**
    * Name getter.
    * 
-   * @return String value representing name of the player.
+   * @return String value representing name of the player
    */
   public String getName() {
     return this.name;
   }
 
   /**
+   * Name setter.
+   * 
+   * @return String value to set as name
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  /**
    * Branch getter.
    * 
-   * @return String value representing branch name of the player.
+   * @return String value representing branch name of the player
    */
   public Branch getBranch() {
     return this.branch;
   }
 
   /**
+   * Branch setter.
+   * 
+   * @return String value to set as branch
+   */
+  public void setBranch(Branch branch) {
+    this.branch = branch;
+  }
+
+  /**
+   * Controlled zones getter.
+   * 
+   * @return List of the player's controlled zones
+   */
+  public ArrayList<Zone> getControlledZones() {
+    return this.controlledZones;
+  }
+
+  /**
    * Students getter.
    * 
-   * @return List of the player's students.
+   * @return List of the player's students
    */
   public ArrayList<Student> getStudents() {
     return this.students;
@@ -264,7 +291,7 @@ public class Player {
   /**
    * Points left getter.
    * 
-   * @return Number value of points left to distribute.
+   * @return Number value of points left to distribute
    */
   public int getPointsLeft() {
     return this.pointsLeft;
