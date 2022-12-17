@@ -163,6 +163,7 @@ public class Application {
                   continue;
                 }
 
+                studentToRelocate.setStrategy(new RandomStrategy());
                 studentsToRelocate.add(studentToRelocate);
 
               }
